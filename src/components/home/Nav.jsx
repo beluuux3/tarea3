@@ -1,46 +1,47 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 
 export default function Nav() {
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Services", path: "/services" },
-    { name: "Projects", path: "/projects" },
-    { name: "News", path: "/news" },
-    { name: "Contact", path: "/contact" },
+    { name: "Home", path: "#" },
+    { name: "Services", path: "#services" },
+    { name: "Projects", path: "#projects" },
+    { name: "Blog", path: "#blog" },
+    { name: "Contact", path: "#contact" },
   ];
+
+  const handleScroll = (e, path) => {
+    e.preventDefault();
+    if (path === "#") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const element = document.querySelector(path);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  };
+
   return (
     <>
       <header className="sticky w-full z-50 bg-white shadow-md">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
-          {/* Logo/Nombre del Sitio (Ajusta el texto según el Figma) */}
           <div className="text-xl font-bold text-indigo-700">Klean</div>
 
-          {/* Links de Navegación (Desktop) */}
           <div className="hidden md:flex space-x-6">
             {navLinks.map((link) => (
-              <NavLink
+              <a
                 key={link.name}
-                to={link.path}
-                // Estilos base de Tailwind
-                className={({ isActive }) =>
-                  `text-gray-600 hover:text-indigo-700 font-medium transition duration-300 relative 
-                 ${
-                   isActive
-                     ? "text-indigo-700 font-bold after:scale-x-100" // Estilo activo
-                     : "after:scale-x-0" // Estilo inactivo
-                 }
-                 // Implementación de la animación (Opcional):
+                href={link.path}
+                onClick={(e) => handleScroll(e, link.path)}
+                className="text-gray-600 hover:text-indigo-700 font-medium transition duration-300 relative 
                  after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 
-                 after:bg-indigo-700 after:transition-transform after:duration-300 hover:after:scale-x-100`
-                }
+                 after:bg-indigo-700 after:transition-transform after:duration-300 after:scale-x-0 hover:after:scale-x-100"
               >
                 {link.name}
-              </NavLink>
+              </a>
             ))}
           </div>
 
-          {/* Botones de Acción */}
           <div className="hidden md:flex space-x-4">
             <button className="text-indigo-700 font-medium px-4 py-1.5 rounded-lg transition duration-300 hover:bg-indigo-50">
               Log In
@@ -49,9 +50,6 @@ export default function Nav() {
               Sign Up
             </button>
           </div>
-
-          {/* Menú Hamburguesa (Mobile - Implementación omitida por brevedad, pero necesaria para responsividad) */}
-          {/* ... */}
         </nav>
       </header>
     </>
